@@ -1,6 +1,15 @@
 import type { DemoSnapshot } from "./types";
 
 export const demoSeed: DemoSnapshot = {
+  schemaVersion: 2,
+  storyStage: "INTRO",
+  activeQuestId: "PQ-101",
+  project: {
+    currentVersion: 0,
+    revisionFeedback:
+      "首屏卖点不够突出；参数区统一为三列网格；降低装饰元素对商品主体的干扰。",
+  },
+  playerPosition: { x: 210, y: 410 },
   quests: [
     {
       id: "PQ-101",
@@ -51,6 +60,8 @@ export const demoSeed: DemoSnapshot = {
 export function createSeedSnapshot(): DemoSnapshot {
   return {
     ...demoSeed,
+    project: { ...demoSeed.project },
+    playerPosition: { ...demoSeed.playerPosition },
     quests: demoSeed.quests.map((quest) => ({ ...quest })),
     credentials: demoSeed.credentials.map((credential) => ({ ...credential })),
   };

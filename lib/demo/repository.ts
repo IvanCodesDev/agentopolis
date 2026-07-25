@@ -4,6 +4,7 @@ import type {
   DemoRole,
   DemoSnapshot,
   QuestFilter,
+  StoryStage,
   WalletDemoState,
 } from "./types";
 
@@ -19,10 +20,29 @@ const filters = new Set<QuestFilter>([
   "INVITED",
   "ACCEPTED",
   "SUBMITTED",
+  "V1_SUBMITTED",
+  "REVISION_REQUESTED",
+  "V2_SUBMITTED",
+  "APPROVED",
   "ISSUED",
   "REVOKED",
 ]);
 const roles = new Set<DemoRole>(["designer", "guild", "hr"]);
+const storyStages = new Set<StoryStage>([
+  "INTRO",
+  "TASK_CREATED",
+  "DESIGNER_INVITED",
+  "QUEST_ACCEPTED",
+  "V1_SUBMITTED",
+  "REVISION_REQUESTED",
+  "V2_SUBMITTED",
+  "WORK_APPROVED",
+  "ATTESTING",
+  "CREDENTIAL_ISSUED",
+  "PORTFOLIO_SHARED",
+  "HR_VERIFIED",
+  "CREDENTIAL_REVOKED",
+]);
 
 function isDemoSnapshot(value: unknown): value is DemoSnapshot {
   if (!value || typeof value !== "object") return false;
@@ -43,8 +63,41 @@ export function loadDemoSnapshot(storage?: Storage): DemoSnapshot {
     if (!saved) return fallback;
     const parsed: unknown = JSON.parse(saved);
     if (!isDemoSnapshot(parsed)) return fallback;
+    const credentials = Array.isArray(parsed.credentials)
+      ? parsed.credentials.map((credential) => ({
+          ...credential,
+          status: credential.status === "REVOKED" ? "REVOKED" : "VALID",
+          inPassport: credential.inPassport ?? false,
+          verificationCount: credential.verificationCount ?? 0,
+        }))
+      : [];
+    const inferredStage: StoryStage =
+      credentials.length > 0 ? "CREDENTIAL_ISSUED" : "INTRO";
     return {
+      ...fallback,
       ...parsed,
+      schemaVersion: 2,
+      storyStage:
+        parsed.schemaVersion === 2 &&
+        storyStages.has(parsed.storyStage as StoryStage)
+        ? (parsed.storyStage as StoryStage)
+        : inferredStage,
+      activeQuestId:
+        typeof parsed.activeQuestId === "string"
+          ? parsed.activeQuestId
+          : fallback.activeQuestId,
+      project: {
+        ...fallback.project,
+        ...(parsed.project && typeof parsed.project === "object"
+          ? parsed.project
+          : {}),
+      },
+      playerPosition:
+        parsed.playerPosition &&
+        typeof parsed.playerPosition.x === "number" &&
+        typeof parsed.playerPosition.y === "number"
+          ? { ...parsed.playerPosition }
+          : { ...fallback.playerPosition },
       currentRole: roles.has(parsed.currentRole as DemoRole)
         ? parsed.currentRole
         : "designer",
@@ -52,13 +105,7 @@ export function loadDemoSnapshot(storage?: Storage): DemoSnapshot {
         ...quest,
         submission: quest.submission ? { ...quest.submission } : undefined,
       })),
-      credentials: Array.isArray(parsed.credentials)
-        ? parsed.credentials.map((credential) => ({
-            ...credential,
-            status:
-              credential.status === "REVOKED" ? "REVOKED" : "VALID",
-          }))
-        : [],
+      credentials,
     };
   } catch {
     return fallback;
