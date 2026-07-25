@@ -1,0 +1,11 @@
+.superpowers/
+.codex-run/
+.next/
+node_modules/
+out/
+coverage/
+playwright-report/
+test-results/
+*.log
+.env*
+!.env.example
