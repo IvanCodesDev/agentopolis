@@ -90,18 +90,23 @@
 
 .cy-stage {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
+  width: 100vw;
+  height: 100vh;
+  display: block;
   overflow: hidden;
   background: var(--cy-bg);
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .cy-board {
-  width: 1672px;
-  height: 941px;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
   flex: 0 0 auto;
-  transform-origin: center center;
-  padding: 20px 30px 30px;
+  transform-origin: top left;
+  padding: 0;
   display: flex;
   flex-direction: column;
   background: var(--cy-bg);
@@ -123,6 +128,15 @@
 
 .cy-board-body { flex: 1; min-height: 0; display: flex; gap: 22px; }
 
+.cy-shell-board { padding: 0; }
+.cy-shell { flex: 1; min-height: 0; overflow: hidden; }
+.cy-shell > .cy-page { flex: 1; min-height: 0; overflow: auto; }
+.cy-shell > .cy-page { width: 100%; max-width: none !important; }
+.cy-nav { display: flex; align-items: center; gap: 26px; margin-left: 62px; }
+.cy-nav a { display: inline-flex; align-items: baseline; gap: 7px; padding: 4px 2px; font-family: var(--cy-mono); font-size: 15px; font-weight: 600; letter-spacing: 1px; }
+.cy-nav a em { font-style: normal; font-size: 10px; color: #9a9aa3; letter-spacing: .8px; }
+.cy-nav a.on { color: var(--cy-purple-ink); }
+
 /* The white app surface each slide is built on. */
 .cy-surface {
   flex: 1;
@@ -130,13 +144,15 @@
   display: flex;
   flex-direction: column;
   background: var(--cy-card);
-  border: 1px solid #ebebee;
-  border-radius: 22px;
+  border: 0;
+  border-radius: 0;
 }
 
 .cy-logo { display: inline-flex; align-items: center; gap: 11px; font-weight: 800; font-size: 25px; letter-spacing: .2px; }
 .cy-logo svg { flex: 0 0 auto; }
-.cy-logo u { text-decoration: none; color: var(--cy-purple); }
+/* The wordmark's trailing underscore is a purple bar, not a glyph — it has to hug
+   the R with no side bearing. */
+.cy-logo i { display: inline-block; width: .58em; height: .13em; margin-left: .05em; background: var(--cy-purple); vertical-align: -.06em; }
 
 /* Mono micro-type used for nav items, coordinates and corner slugs. */
 .cy-mono-nav {

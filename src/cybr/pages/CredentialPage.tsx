@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Shell, SlimBar } from "../shell";
+import { Shell } from "../shell";
 import { Icon, PixelPlate, QrPlate, Seal, Tag } from "../ui";
 import { CREDENTIAL, CREDENTIAL_TABS } from "../data";
 
@@ -9,8 +9,8 @@ export function CredentialPage() {
   const [tab, setTab] = useState("凭证详情");
 
   return (
-    <Shell bar={<SlimBar title="凭证详情" />}>
-      <main className="cy-page" style={{ maxWidth: 880 }}>
+    <Shell>
+      <main className="cy-page cy-credential-page">
         <section className="cy-card cy-vc">
           <header className="cy-vc-head">
             <div className="cy-row">

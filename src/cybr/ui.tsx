@@ -257,6 +257,7 @@ const PATHS: Record<string, ReactNode> = {
   filter: <path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z" />,
   copy: <><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></>,
   download: <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16" />,
+  upload: <path d="M12 16V4m0 0L8 8m4-4 4 4M5 20h14" />,
   share: <><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4" /></>,
   shield: <path d="M12 3l8 3v6c0 5-3.4 8.2-8 9-4.6-.8-8-4-8-9V6l8-3Z" />,
   shieldCheck: <><path d="M12 3l8 3v6c0 5-3.4 8.2-8 9-4.6-.8-8-4-8-9V6l8-3Z" /><path d="m9 12 2 2 4-4" /></>,

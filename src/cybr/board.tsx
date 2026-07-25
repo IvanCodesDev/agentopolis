@@ -8,7 +8,7 @@ export const BOARD_H = 941;
  * pixel-for-pixel. On screen we scale the whole slide to fit the viewport instead of
  * reflowing it, which is what keeps the replication exact at any window size.
  */
-function useFitScale() {
+export function useFitScale() {
   const stage = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
@@ -18,7 +18,10 @@ function useFitScale() {
     const fit = () => {
       const { width, height } = node.getBoundingClientRect();
       if (!width || !height) return;
-      setScale(Math.min(width / BOARD_W, height / BOARD_H, 1));
+      const styles = getComputedStyle(node);
+      const horizontal = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+      const vertical = parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom);
+      setScale(Math.min((width - horizontal) / BOARD_W, (height - vertical) / BOARD_H, 1));
     };
     fit();
     const observer = new ResizeObserver(fit);
@@ -30,14 +33,11 @@ function useFitScale() {
 }
 
 export function Board({
-  index,
-  title,
-  sub,
   children,
 }: {
-  index: string;
-  title: string;
-  sub: string;
+  index?: string;
+  title?: string;
+  sub?: string;
   children: ReactNode;
 }) {
   const { stage, scale } = useFitScale();
@@ -45,12 +45,6 @@ export function Board({
   return (
     <div className="cybr cy-stage" ref={stage}>
       <div className="cy-board" style={{ transform: `scale(${scale})` }}>
-        <div className="cy-board-label">
-          <b>{index}</b>
-          <strong>{title}</strong>
-          <em style={{ fontStyle: "normal", color: "#c2c2c9" }}>/</em>
-          <span>{sub}</span>
-        </div>
         <div className="cy-board-body">{children}</div>
       </div>
     </div>
@@ -75,7 +69,9 @@ export function Logo({ size = 26, tone = "dark" }: { size?: number; tone?: "dark
   return (
     <span className="cy-logo" style={{ fontSize: size, color: tone === "light" ? "#fff" : undefined }}>
       <Mark size={size * 0.92} />
-      CYBR<u>_</u>
+      <span>
+        CYBR<i />
+      </span>
     </span>
   );
 }

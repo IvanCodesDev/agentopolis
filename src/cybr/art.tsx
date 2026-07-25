@@ -36,54 +36,73 @@ function buildVoxel(seed: string, cols: number, rows: number) {
   const rand = mulberry32(seedOf(seed));
   const cells: Cell[] = [];
 
-  // Silhouette: a solid body with a chamfered top-left shoulder, eroded at the edges.
-  const bodyTop = rows * 0.3;
-  const shoulder = rows * 0.16;
+  /* The mass reads as a block seen slightly from above: a stepped roof of light grey
+     terraces on the left, a near-black front wall, and a mid-grey flank on the right.
+     `roof` is the terrace line, sampled per column so the silhouette stays jagged. */
+  const roof: number[] = [];
+  let step = rows * 0.26;
+  for (let col = 0; col < cols; col += 1) {
+    // Terraces change in a few discrete jumps rather than a smooth curve.
+    if (rand() < 0.22) step += rows * (rand() * 0.14 - 0.08);
+    if (col > cols * 0.78 && rand() < 0.4) step += rows * 0.05;
+    const center = Math.abs(col / cols - 0.48);
+    const tower = center < 0.18 ? rows * 0.18 : center < 0.3 ? rows * 0.23 : 0;
+    roof[col] = Math.min(rows * 0.55, Math.max(rows * 0.04, step - tower));
+  }
+
+  const floorOf = (col: number) => rows - 0.5 - Math.max(0, (col / cols - 0.55) * rows * 0.22);
+  const leftOf = (row: number) => 2.6 + Math.sin(row * 0.42) * 1.2;
+  const rightOf = (row: number) => cols - 1.4 - Math.max(0, (row / rows - 0.72) * cols * 0.3);
 
   for (let row = 0; row < rows; row += 1) {
+    const left = leftOf(row);
+    const right = rightOf(row);
     for (let col = 0; col < cols; col += 1) {
-      const u = col / (cols - 1);
-      const v = row / (rows - 1);
+      const top = roof[col];
+      if (row < top || row > floorOf(col) || col < left || col > right) continue;
 
-      // Top face slopes away to the right; left flank is cut back.
-      const roof = bodyTop - shoulder * (1 - u) * 1.4 + Math.sin(u * 5.2) * 1.1;
-      const left = 3.2 + Math.sin(v * 4.1) * 1.6;
-      const right = cols - 2.4 - Math.cos(v * 3.3) * 1.4;
-      const floor = rows - 1.5 - u * 1.8;
+      // Only the very rim is eroded — the interior stays solid.
+      const edge = Math.min(row - top, col - left, right - col);
+      if (edge < 0.9 && rand() > 0.72) continue;
 
-      const inside = row > roof && row < floor && col > left && col < right;
-      // Erode the boundary so the mass keeps a pixel-scattered rim.
-      const edge = Math.min(row - roof, floor - row, col - left, right - col);
-      if (!inside || (edge < 1.6 && rand() > 0.45)) continue;
-
-      // Lit top band, dark front, mid-tone right flank.
-      const lit = Math.max(0, 1 - (row - roof) / 4.5);
-      const flank = Math.max(0, (col - right + 5) / 5);
-      const band = Math.sin(row * 1.7) * 0.06 + Math.sin(row * 0.31) * 0.09;
-      const shade = 0.16 + lit * 0.62 + flank * 0.3 + band + rand() * 0.16;
+      const depth = (row - top) / rows;
+      const lit = Math.max(0, 1 - depth * 9); // thin lit strip along each terrace
+      const flank = Math.max(0, (col - cols * 0.74) / (cols * 0.26)) * 0.3;
+      const striation = Math.sin(row * 1.9) * 0.05 + Math.sin(row * 0.37 + 1) * 0.06;
+      const patch = rand() < 0.07 ? 0.42 : 0; // stray light chips inside the mass
+      const shade = 0.05 + lit * 0.85 + flank + striation + patch + rand() * 0.09;
       const index = Math.min(GREYS.length - 1, Math.max(0, Math.round(shade * (GREYS.length - 1))));
       cells.push({ x: col, y: row, w: 1, h: 1, fill: GREYS[index] });
     }
   }
 
-  // Accent cells: purple down the left flank and upper right, lime low and central.
+  /* Accent cells hug the silhouette instead of floating free: purple runs down the
+     left flank and over the top-right shoulder, lime sits low and central. */
   const accents: Cell[] = [];
-  const drop = (x: number, y: number, w: number, h: number, fill: string) => accents.push({ x, y, w, h, fill });
   const purple = "#7b5cff";
   const lime = "#c6ff00";
 
-  for (let i = 0; i < 26; i += 1) {
-    const onLeft = rand() < 0.5;
-    const col = onLeft ? 0.5 + rand() * 5 : cols - 7 + rand() * 6;
-    const row = 3 + rand() * (rows - 6);
-    const size = rand() < 0.3 ? 2 : 1;
-    drop(Math.round(col), Math.round(row), size, size, purple);
+  const stack = (col: number, row: number, w: number, h: number, fill: string) =>
+    accents.push({ x: col, y: row, w, h, fill });
+
+  // Tall purple column on the left shoulder.
+  stack(1, Math.round(rows * 0.34), 2, 3, purple);
+  stack(1, Math.round(rows * 0.44), 1, 5, purple);
+  stack(2, Math.round(rows * 0.62), 2, 2, purple);
+  for (let i = 0; i < 9; i += 1) {
+    stack(Math.round(rand() * 4), Math.round(rows * (0.34 + rand() * 0.55)), rand() < 0.4 ? 2 : 1, 1, purple);
   }
-  for (let i = 0; i < 14; i += 1) {
-    const col = 4 + rand() * (cols - 9);
-    const row = rows * 0.52 + rand() * rows * 0.42;
-    const size = rand() < 0.35 ? 2 : 1;
-    drop(Math.round(col), Math.round(row), size, size, lime);
+  // Right shoulder + lower right.
+  for (let i = 0; i < 10; i += 1) {
+    const col = cols - 6 + Math.round(rand() * 5);
+    const row = Math.round(rows * (rand() < 0.5 ? 0.1 + rand() * 0.28 : 0.6 + rand() * 0.38));
+    stack(col, row, rand() < 0.35 ? 2 : 1, rand() < 0.3 ? 2 : 1, purple);
+  }
+  // Lime cluster across the lower middle.
+  for (let i = 0; i < 13; i += 1) {
+    const col = Math.round(cols * (0.12 + rand() * 0.74));
+    const row = Math.round(rows * (0.55 + rand() * 0.42));
+    stack(col, row, rand() < 0.4 ? 2 : 1, rand() < 0.35 ? 2 : 1, lime);
   }
 
   return { cells, accents };
@@ -91,8 +110,8 @@ function buildVoxel(seed: string, cols: number, rows: number) {
 
 export function VoxelRender({
   seed = "cybr-scn-01",
-  cols = 30,
-  rows = 28,
+  cols = 34,
+  rows = 30,
   cell = 19,
   className,
 }: {
@@ -119,8 +138,12 @@ export function VoxelRender({
           width={c.w * cell}
           height={c.h * cell}
           fill={c.fill}
-          opacity={0.85}
+          opacity={0.82}
         />
+      ))}
+      {/* Fine scan striations across the whole mass. */}
+      {Array.from({ length: Math.floor(h / 6) }, (_, i) => (
+        <rect key={`s${i}`} x={0} y={i * 6} width={w} height={1} fill="#fff" opacity={0.05} />
       ))}
     </svg>
   );

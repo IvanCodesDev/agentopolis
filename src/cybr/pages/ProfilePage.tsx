@@ -1,46 +1,23 @@
 import { Link } from "react-router-dom";
-import { Logo } from "../shell";
+import { Shell } from "../shell";
 import { Donut, Icon, Tag } from "../ui";
-import { CREDENTIAL_MIX, DESIGNER, PROFILE_MENU, PROFILE_STATS, RECENT_TASKS, SKILLS } from "../data";
+import { CREDENTIAL_MIX, DESIGNER, PROFILE_STATS, RECENT_TASKS, SKILLS } from "../data";
 
 const TOTAL = CREDENTIAL_MIX.reduce((sum, slice) => sum + slice.value, 0);
 
 /** Board 05 —「个人中心 / 设计师工作台」*/
 export function ProfilePage() {
   return (
-    <div className="cybr">
-      <div className="cy-workbench">
-        <aside className="cy-side">
-          <div className="cy-side-brand">
-            <Logo />
-          </div>
-
-          <div className="cy-side-user">
+    <Shell>
+        <main className="cy-page cy-talent-page">
+          <header className="cy-talent-head">
             <span className="cy-avatar cy-avatar-lg cy-avatar-purple">{DESIGNER.name.slice(0, 1)}</span>
-            <strong>{DESIGNER.name}</strong>
-            <span className="cy-xs cy-muted">{DESIGNER.role}</span>
-            <code className="cy-xs cy-muted">{DESIGNER.address}</code>
-          </div>
-
-          <nav className="cy-side-menu">
-            {PROFILE_MENU.map((item, index) => (
-              <button key={item.key} type="button" className={index === 0 ? "on" : undefined}>
-                <Icon name={item.icon} size={15} />
-                {item.label}
-              </button>
-            ))}
-          </nav>
-        </aside>
-
-        <main className="cy-workbench-main">
-          <header className="cy-spread cy-workbench-head">
             <div className="cy-stack">
-              <span className="cy-label">工作台</span>
-              <h1 className="cy-d2">你好，{DESIGNER.name}</h1>
+              <span className="cy-label">人才档案 / TALENT PROFILE</span>
+              <h1 className="cy-d2">{DESIGNER.name}</h1>
+              <p className="cy-body cy-dim">{DESIGNER.role} · <code>{DESIGNER.address}</code></p>
             </div>
-            <button type="button" className="cy-icon-btn" aria-label="通知">
-              <Icon name="bell" />
-            </button>
+            <Link to="/v2/credentials/VC-0x7a0f" className="cy-btn cy-btn-dark">查看凭证</Link>
           </header>
 
           <section className="cy-workbench-stats">
@@ -110,7 +87,6 @@ export function ProfilePage() {
             </div>
           </section>
         </main>
-      </div>
-    </div>
+    </Shell>
   );
 }

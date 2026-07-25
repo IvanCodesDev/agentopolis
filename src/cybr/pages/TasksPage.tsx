@@ -18,7 +18,7 @@ export function TasksPage() {
   const visible = filter === "全部" ? TASKS : TASKS.filter((task) => task.status === FILTER_STATUS[filter]);
 
   return (
-    <Shell>
+    <Shell index="02" title="任务中心" sub="任务列表">
       <main className="cy-page">
         <div className="cy-spread cy-tasks-head">
           <h1 className="cy-d1">我的任务</h1>
@@ -33,6 +33,8 @@ export function TasksPage() {
           </div>
         </div>
 
+        <div className="cy-task-board">
+        <section className="cy-task-list-pane">
         <div className="cy-pills cy-tasks-filters">
           {TASK_FILTERS.map((item) => (
             <button
@@ -90,6 +92,17 @@ export function TasksPage() {
         </ul>
 
         {visible.length === 0 && <p className="cy-empty cy-body cy-muted">当前筛选条件下暂无任务。</p>}
+        </section>
+        <aside className="cy-task-detail cy-card">
+          <div className="cy-card-head"><h2>任务详情</h2><span className="cy-xs cy-muted">PRJ-2024-0618-001</span></div>
+          <div className="cy-task-detail-body">
+            <div className="cy-row"><h2 className="cy-d2">电商品牌视觉设计</h2><Tag status="run" /></div>
+            <dl className="cy-project-meta"><div><dt>发布方</dt><dd>光合设计工作室</dd></div><div><dt>交付时间</dt><dd>2024.06.30</dd></div><div><dt>负责人</dt><dd>张伟</dd></div></dl>
+            <div className="cy-tabs"><button className="on" type="button">任务清单</button><button type="button">文件交付</button><button type="button">验收记录</button></div>
+            <ol className="cy-timeline">{["市场调研","任务分析","任务策划","设计执行","中期方案确认","修改完善"].map((step, i) => <li key={step} className={i === 3 ? "on" : undefined}><span className="cy-timeline-dot"/><strong>{step}</strong><span className="cy-timeline-actor">{["李明设计工作室","林 月品牌设计-小林","陆 设计协同AI-阿智","设计师-张三","飞灵工作室助理","甲方-陈一鸣"][i]}</span><time className="cy-mono">2024.06.{18 + i}</time></li>)}</ol>
+          </div>
+        </aside>
+        </div>
       </main>
     </Shell>
   );

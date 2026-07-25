@@ -1,12 +1,13 @@
-import { Board, Logo } from "../board";
-import { BlueprintGrid, SurveyMarks, VoxelRender } from "../art";
+import { Logo } from "../board";
+import { Link } from "react-router-dom";
+import homeArt from "../assets/home-art.png";
 import { Icon } from "../ui";
-import { HOME_COORDS, HOME_NAV, HOME_STATS } from "../data";
+import { HOME_NAV, HOME_STATS } from "../data";
 
 /** Board 01 —「首页 / 首页 Dashboard」*/
 export function HomePage() {
   return (
-    <Board index="01" title="首页" sub="首页 Dashboard">
+    <div className="cybr cy-stage cy-home-root"><div className="cy-board"><div className="cy-board-body">
       <div className="cy-surface">
         <header className="cy-topbar">
           <Logo />
@@ -14,7 +15,7 @@ export function HomePage() {
             {HOME_NAV.map((item, i) => (
               <span key={item} style={{ display: "inline-flex", alignItems: "center", gap: 26 }}>
                 {i > 0 && <s className="cy-slash">/</s>}
-                <a className="cy-mono-nav" href="#top">{item}</a>
+                <Link className="cy-mono-nav" to={i === 0 ? "/v2/projects/PRJ-2024-0618-001" : i === 3 ? "/v2/profile" : "/v2/tasks"}>{item}</Link>
               </span>
             ))}
           </nav>
@@ -61,10 +62,10 @@ export function HomePage() {
               让协作的努力、复现的成果、被看见，被认可。
             </p>
             <div className="cy-01-actions">
-              <button type="button" className="cy-cta">
+              <Link to="/v2/tasks" className="cy-cta">
                 开始探索
                 <Icon name="arrow" size={20} strokeWidth={2.2} />
-              </button>
+              </Link>
               <button type="button" className="cy-ghost-link">
                 了解如何运行
                 <Icon name="frame" size={22} strokeWidth={1.8} />
@@ -73,22 +74,7 @@ export function HomePage() {
           </div>
 
           <div className="cy-01-art">
-            <BlueprintGrid className="cy-01-grid" />
-            <VoxelRender className="cy-01-voxel" />
-            <SurveyMarks />
-
-            <div className="cy-01-badge">
-              <div><i>&gt;</i>渲染中</div>
-              <div><em />83%</div>
-            </div>
-            <span className="cy-01-globe"><Icon name="globe" size={40} strokeWidth={1.4} /></span>
-
-            <div className="cy-01-coords">
-              {HOME_COORDS.map((line) => (
-                <div key={line}>{line}</div>
-              ))}
-            </div>
-            <span className="cy-01-slug">//SCN_01</span>
+            <img className="cy-01-art-image" src={homeArt} alt="CYBR voxel architecture" />
           </div>
         </section>
 
@@ -100,7 +86,6 @@ export function HomePage() {
             </div>
           ))}
         </footer>
-      </div>
-    </Board>
+      </div></div></div></div>
   );
 }

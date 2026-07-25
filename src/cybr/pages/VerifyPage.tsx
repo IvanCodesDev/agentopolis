@@ -1,19 +1,20 @@
-import { Shell, SlimBar } from "../shell";
+import { Shell } from "../shell";
 import { Icon, Seal } from "../ui";
 import { CREDENTIAL, VERIFY_CHECKS } from "../data";
 
 /** Board 06 —「验证页面 / HR 验证视图」*/
 export function VerifyPage() {
   return (
-    <Shell bar={<SlimBar title="凭证验证" />}>
-      <main className="cy-page" style={{ maxWidth: 980 }}>
+    <Shell>
+      <main className="cy-page cy-verify-page">
+        <aside className="cy-verify-rail" aria-hidden="true"><span>HR VERIFICATION MODULE</span><b>2024</b></aside>
         <section className="cy-card cy-verify-hero">
           <span className="cy-verify-shield" aria-hidden="true">
             <Icon name="shieldCheck" size={26} />
           </span>
           <div className="cy-stack">
             <h1 className="cy-d2">凭证已验证</h1>
-            <p className="cy-body cy-dim">该凭证真实有效，已通过 {CREDENTIAL.chain} 链上验证。</p>
+            <p className="cy-body cy-dim">该凭证真实有效，信息未被篡改</p>
             <p className="cy-verify-note">
               <Icon name="check" size={13} />
               已通过链上验证 · 未被撤销
@@ -22,8 +23,8 @@ export function VerifyPage() {
         </section>
 
         <div className="cy-verify-grid">
-          <section className="cy-card">
-            <div className="cy-card-head">
+          <section className="cy-verify-info">
+            <div className="cy-card-head cy-verify-info-head">
               <h2>凭证信息</h2>
             </div>
             <dl className="cy-card-pad" style={{ paddingTop: 4, paddingBottom: 10 }}>
