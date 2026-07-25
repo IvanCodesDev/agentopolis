@@ -1,0 +1,162 @@
+/* Board-level layout for the CYBR_ deck (UI/01-07.jpg), authored at the deck's
+   native 1672x941 so every measurement below is a reference pixel. */
+
+/* ============================================================ shared chrome */
+
+.cy-topbar {
+  display: flex;
+  align-items: center;
+  height: 88px;
+  padding: 0 30px 0 34px;
+  border-bottom: 1px solid #ececef;
+}
+
+.cy-topnav { display: flex; align-items: center; gap: 26px; margin-left: 62px; }
+.cy-topnav a { padding: 4px 2px; }
+.cy-topbar-end { display: flex; align-items: stretch; margin-left: auto; height: 100%; }
+
+.cy-systime {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 34px;
+  border-left: 1px solid #ececef;
+  border-right: 1px solid #ececef;
+  font-family: var(--cy-mono);
+  font-size: 15px;
+  line-height: 20px;
+  color: #55555e;
+}
+.cy-systime b { font-weight: 400; color: #35353d; }
+.cy-systime u { text-decoration: none; display: inline-flex; align-items: center; gap: 30px; }
+.cy-systime i { width: 7px; height: 7px; border-radius: 50%; background: var(--cy-purple); }
+
+.cy-topbar-actions { display: flex; align-items: center; gap: 18px; padding-left: 34px; }
+
+/* Square-cornered CTA — the deck never rounds its primary buttons. */
+.cy-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 56px;
+  padding: 0 34px;
+  background: var(--cy-black);
+  color: #fff;
+  font-size: 21px;
+  font-weight: 500;
+}
+.cy-cta svg { color: var(--cy-purple); }
+.cy-cta-light { background: #fff; color: var(--cy-black); border: 1px solid #dcdce1; }
+.cy-cta-light svg { color: var(--cy-black); }
+
+.cy-ghost-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 21px;
+  color: #23232a;
+}
+
+.cy-dots { display: grid; gap: 5px; padding: 8px; }
+.cy-dots i { width: 4px; height: 4px; border-radius: 50%; background: #55555e; }
+
+/* ================================================================= board 01 */
+
+.cy-01-hero { flex: 1; min-height: 0; display: flex; }
+
+.cy-01-rail {
+  flex: 0 0 71px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 26px;
+  padding: 34px 0 44px;
+  border-right: 1px solid #ececef;
+}
+.cy-01-rail .cy-01-ticks { display: flex; flex-direction: column; align-items: center; gap: 13px; margin-bottom: auto; }
+.cy-01-rail .cy-01-ticks i { display: block; width: 1px; height: 7px; background: #d0d0d6; }
+.cy-01-rail .cy-01-ticks i:nth-child(n + 4) { width: 13px; height: 1px; }
+.cy-01-rail span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--cy-mono);
+  font-size: 13px;
+  letter-spacing: 3.4px;
+  color: var(--cy-purple);
+}
+.cy-01-rail b { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--cy-mono); font-size: 15px; color: #35353d; }
+
+.cy-01-copy { flex: 0 0 620px; padding: 46px 0 0 56px; }
+.cy-01-index { display: block; font-family: var(--cy-mono); font-size: 17px; color: var(--cy-purple); margin-bottom: 22px; }
+
+.cy-01-title { font-size: 91px; line-height: 100px; font-weight: 800; letter-spacing: -2px; }
+.cy-01-title em { font-style: normal; color: var(--cy-purple); }
+
+.cy-01-lead { margin-top: 32px; font-size: 21px; line-height: 33px; color: #55555e; }
+
+.cy-01-actions { display: flex; align-items: center; gap: 38px; margin-top: 44px; }
+
+.cy-01-art { flex: 1; min-width: 0; position: relative; }
+.cy-01-art > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cy-01-art .cy-01-grid { opacity: .55; }
+.cy-01-art .cy-01-voxel { inset: 24% 20% -2% 13%; width: auto; height: auto; overflow: visible; }
+
+.cy-01-badge {
+  position: absolute;
+  left: 22px;
+  top: 26px;
+  padding: 12px 22px 13px;
+  background: #fff;
+  border: 1px solid #e2e2e7;
+  font-family: var(--cy-mono);
+  font-size: 16px;
+  line-height: 26px;
+  color: #23232a;
+}
+.cy-01-badge div { display: flex; align-items: center; gap: 12px; }
+.cy-01-badge i { color: #9a9aa3; }
+.cy-01-badge em { width: 7px; height: 7px; border-radius: 50%; background: var(--cy-purple); }
+
+.cy-01-globe { position: absolute; right: 34px; top: 24px; color: #0b0b0b; }
+
+.cy-01-coords {
+  position: absolute;
+  right: 18px;
+  bottom: 118px;
+  padding: 18px 26px;
+  border: 1px solid var(--cy-lime);
+  background: #fcffef;
+  font-family: var(--cy-mono);
+  font-size: 19px;
+  line-height: 30px;
+  color: #23232a;
+}
+
+.cy-01-slug { position: absolute; right: 24px; bottom: 26px; font-family: var(--cy-mono); font-size: 17px; color: #35353d; }
+
+.cy-01-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 97px;
+  padding: 0 0 0 127px;
+  border-top: 1px solid #ececef;
+  background: #fff;
+  position: relative;
+  z-index: 1;
+  border-radius: 0 0 22px 22px;
+}
+.cy-01-stats > div { display: flex; flex-direction: column; justify-content: center; gap: 8px; position: relative; }
+.cy-01-stats > div + div::before {
+  content: "";
+  position: absolute;
+  left: -46px;
+  top: 20px;
+  bottom: 20px;
+  width: 1px;
+  background: repeating-linear-gradient(#cfcfd6 0 2px, transparent 2px 7px);
+}
+.cy-01-stats b { font-size: 33px; font-weight: 700; color: var(--cy-purple); letter-spacing: -.3px; }
+.cy-01-stats span { font-size: 16px; color: #77777f; }

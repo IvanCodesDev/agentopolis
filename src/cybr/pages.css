@@ -1,0 +1,372 @@
+/* Per-board layout for the CYBR_ replication. Section numbers match the design board. */
+
+/* ============================================================ 01 首页 Dashboard */
+
+.cy-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  padding: 44px 44px 44px 92px;
+  border-radius: 14px;
+  background: var(--cy-black);
+  color: #fff;
+  overflow: hidden;
+}
+
+.cy-hero-index {
+  position: absolute; top: 22px; left: 92px;
+  font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, .45);
+}
+
+.cy-hero-rail {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 60px;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  padding: 28px 0;
+  border-right: 1px solid rgba(255, 255, 255, .1);
+}
+.cy-hero-rail span {
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-size: 9px; font-weight: 700; letter-spacing: 2.4px;
+  color: rgba(255, 255, 255, .42); white-space: nowrap;
+}
+.cy-hero-rail .cy-hero-year { color: var(--cy-lime); letter-spacing: 1.6px; }
+
+.cy-hero-copy { align-self: center; padding: 18px 0; }
+
+.cy-hero-title {
+  font-size: 52px; line-height: 1.14; font-weight: 800; letter-spacing: -1.5px; margin: 0;
+}
+.cy-hero-title em { font-style: normal; color: var(--cy-purple); }
+
+.cy-hero-copy p {
+  margin: 22px 0 0;
+  font-size: 14px; line-height: 24px; color: rgba(255, 255, 255, .62);
+}
+
+.cy-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.cy-hero-ghost { background: transparent; color: #fff; border: 1px solid rgba(255, 255, 255, .28); }
+.cy-hero-ghost:hover { background: rgba(255, 255, 255, .08); }
+
+.cy-hero-art { position: relative; margin: 0; border-radius: 10px; overflow: hidden; min-height: 320px; }
+.cy-hero-art .cy-pixel { width: 100%; height: 100%; position: absolute; inset: 0; }
+
+.cy-hero-globe {
+  position: absolute; top: 14px; right: 14px;
+  display: grid; place-items: center; width: 32px; height: 32px;
+  border-radius: 50%; background: rgba(11, 11, 12, .55); color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.cy-hero-coords {
+  position: absolute; right: 14px; bottom: 14px;
+  display: flex; flex-direction: column; gap: 3px; align-items: flex-end;
+  font-family: var(--cy-mono); font-size: 10px; color: var(--cy-lime);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .7);
+}
+
+.cy-home-stats {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px; margin-top: 28px; padding: 4px;
+}
+.cy-home-stats .cy-stat b { font-size: 30px; line-height: 36px; }
+
+/* ============================================================= 02 任务中心 */
+
+.cy-tasks-head { margin-bottom: 20px; align-items: flex-end; }
+.cy-tasks-filters { margin-bottom: 18px; }
+
+.cy-task-list { display: flex; flex-direction: column; gap: 12px; }
+
+.cy-task {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr) 32px;
+  align-items: center; gap: 16px; padding: 16px 18px;
+}
+
+.cy-task-art { width: 56px; height: 56px; }
+.cy-task-art .cy-pixel { width: 100%; height: 100%; }
+
+.cy-task-body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.cy-task-title { gap: 10px; }
+.cy-task-title strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.cy-task-meta { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; }
+.cy-task-meta > div { display: flex; align-items: baseline; gap: 6px; }
+.cy-task-meta dt { font-size: 11px; color: var(--cy-muted); }
+.cy-task-meta dd { margin: 0; font-size: 12px; color: var(--cy-text-2); }
+
+.cy-task-progress { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
+.cy-task-progress .cy-bar { flex: 1; min-width: 0; }
+.cy-task-progress b { font-size: 12px; font-variant-numeric: tabular-nums; }
+
+.cy-task-go { color: var(--cy-text-2); }
+.cy-task:hover .cy-task-go { background: var(--cy-black); border-color: var(--cy-black); color: #fff; }
+
+.cy-empty { padding: 40px; text-align: center; }
+
+/* ============================================================= 03 项目详情 */
+
+.cy-project-head {
+  display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+  gap: 24px; padding: 22px 24px;
+}
+.cy-project-head-main { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.cy-project-head-main .cy-row { gap: 12px; flex-wrap: wrap; }
+
+.cy-project-meta { display: flex; flex-wrap: wrap; gap: 8px 26px; margin: 0; }
+.cy-project-meta > div { display: flex; align-items: baseline; gap: 7px; }
+.cy-project-meta dt { font-size: 11px; color: var(--cy-muted); }
+.cy-project-meta dd { margin: 0; font-size: 12px; color: var(--cy-text-2); }
+
+.cy-project-publisher { display: flex; flex-direction: column; gap: 9px; }
+.cy-publisher-mark { width: 38px; height: 38px; border-radius: 8px; }
+.cy-publisher-mark .cy-pixel { width: 100%; height: 100%; }
+
+.cy-project-tabs { margin: 18px 0 18px; overflow-x: auto; }
+
+.cy-project-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, .85fr); gap: 16px; align-items: start; }
+.cy-project-aside { display: flex; flex-direction: column; gap: 16px; }
+
+.cy-timeline { padding: 8px 20px 4px; }
+.cy-timeline li {
+  position: relative;
+  display: grid; grid-template-columns: 22px minmax(74px, auto) minmax(0, 1fr) auto;
+  align-items: center; gap: 12px; padding: 12px 0;
+}
+.cy-timeline li + li::before {
+  content: ""; position: absolute; left: 6px; top: -12px; height: 24px;
+  border-left: 1px dashed var(--cy-line);
+}
+.cy-timeline-dot {
+  width: 13px; height: 13px; border-radius: 50%;
+  border: 2px solid var(--cy-line); background: #fff;
+}
+.cy-timeline li.on .cy-timeline-dot { border-color: var(--cy-purple); background: var(--cy-purple); box-shadow: 0 0 0 4px var(--cy-purple-wash); }
+.cy-timeline li strong { font-size: 13px; font-weight: 600; }
+.cy-timeline li.on strong { color: var(--cy-purple-ink); }
+.cy-timeline-actor { font-size: 12px; color: var(--cy-text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cy-timeline time { font-size: 11px; color: var(--cy-muted); }
+
+.cy-timeline-add {
+  display: flex; align-items: center; gap: 7px;
+  width: calc(100% - 40px); margin: 4px 20px 18px; padding: 10px;
+  border: 1px dashed var(--cy-line); border-radius: var(--cy-r-sm);
+  font-size: 12px; color: var(--cy-muted); justify-content: center;
+}
+.cy-timeline-add:hover { border-color: var(--cy-purple); color: var(--cy-purple); }
+
+.cy-party-list { padding: 6px 20px 14px; }
+.cy-party-list li { display: flex; align-items: center; gap: 11px; padding: 10px 0; border-bottom: 1px solid var(--cy-line-soft); }
+.cy-party-list li:last-child { border-bottom: 0; }
+.cy-party-list strong { font-size: 13px; font-weight: 600; }
+.cy-party-list .cy-stack { min-width: 0; flex: 1; gap: 2px; }
+.cy-avatar-dark { background: var(--cy-black); }
+
+/* ============================================================= 04 凭证详情 */
+
+.cy-vc { overflow: hidden; }
+
+.cy-vc-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 20px 24px; border-bottom: 1px solid var(--cy-line);
+  background: linear-gradient(180deg, var(--cy-purple-wash), #fff);
+}
+.cy-vc-badge {
+  display: grid; place-items: center; width: 36px; height: 36px;
+  border-radius: 10px; background: var(--cy-purple); color: #fff;
+}
+
+.cy-vc-body { display: grid; grid-template-columns: 172px minmax(0, 1fr); gap: 28px; padding: 24px; }
+
+.cy-vc-portrait { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.cy-vc-portrait .cy-pixel-frame { aspect-ratio: 26 / 30; border-radius: 8px; }
+.cy-vc-portrait .cy-pixel { width: 100%; height: 100%; }
+.cy-vc-portrait figcaption { font-size: 10px; color: var(--cy-muted); }
+
+.cy-vc-fields { margin: 0; align-self: start; }
+.cy-vc-fields .cy-kv dt { flex-basis: 74px; }
+
+.cy-vc-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  padding: 18px 24px; border-top: 1px solid var(--cy-line); background: #fafafb;
+}
+.cy-vc-foot-info { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.cy-vc-foot-info code { font-size: 12px; }
+.cy-vc-foot-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.cy-vc-foot-meta span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--cy-muted); }
+
+.cy-vc-tabs { margin: 20px 0; }
+.cy-vc-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.cy-vc-actions .cy-btn { flex: 1; min-width: 190px; }
+
+/* ============================================================= 06 HR 验证页 */
+
+.cy-verify-hero {
+  display: flex; align-items: flex-start; gap: 18px; padding: 26px;
+  background: linear-gradient(120deg, var(--cy-purple-wash), #fff 62%);
+}
+.cy-verify-shield {
+  display: grid; place-items: center; flex: 0 0 auto; width: 52px; height: 52px;
+  border-radius: 14px; background: var(--cy-purple); color: #fff;
+}
+.cy-verify-hero .cy-stack { gap: 8px; }
+.cy-verify-note {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 4px;
+  font-size: 12px; font-weight: 600; color: #147a34;
+}
+
+.cy-verify-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(240px, .8fr); gap: 16px; margin: 16px 0; align-items: start; }
+
+.cy-verify-checks ul { padding: 6px 20px 16px; }
+.cy-verify-checks li { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--cy-line-soft); font-size: 13px; }
+.cy-verify-checks li:last-child { border-bottom: 0; }
+.cy-verify-checks b { margin-left: auto; font-size: 12px; font-weight: 600; color: #147a34; }
+.cy-check-dot {
+  display: grid; place-items: center; flex: 0 0 auto; width: 19px; height: 19px;
+  border-radius: 50%; background: #eafbe9; color: #147a34;
+}
+
+.cy-verify-actions { display: flex; justify-content: flex-end; }
+
+/* ============================================================= 05 个人中心 */
+
+.cy-workbench { display: grid; grid-template-columns: 232px minmax(0, 1fr); min-height: 100vh; }
+
+.cy-side {
+  display: flex; flex-direction: column;
+  border-right: 1px solid var(--cy-line); background: #fff;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.cy-side-brand { display: flex; align-items: center; height: 56px; padding: 0 20px; border-bottom: 1px solid var(--cy-line); }
+
+.cy-side-user {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 24px 20px; border-bottom: 1px solid var(--cy-line); text-align: center;
+}
+.cy-side-user strong { margin-top: 10px; font-size: 15px; }
+
+.cy-side-menu { display: flex; flex-direction: column; gap: 2px; padding: 14px 12px; }
+.cy-side-menu button {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: var(--cy-r-sm);
+  font-size: 13px; font-weight: 500; color: var(--cy-text-2); text-align: left;
+}
+.cy-side-menu button:hover { background: var(--cy-line-soft); color: var(--cy-text); }
+.cy-side-menu button.on { background: var(--cy-purple); color: #fff; }
+
+.cy-workbench-main { padding: 24px 28px 40px; min-width: 0; }
+.cy-workbench-head { margin-bottom: 20px; align-items: flex-start; }
+.cy-workbench-head .cy-stack { gap: 6px; }
+
+.cy-workbench-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 16px; }
+.cy-workbench-stats .cy-stat b { font-size: 28px; }
+
+.cy-workbench-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .9fr); gap: 16px; margin-bottom: 16px; align-items: start; }
+
+.cy-recent { padding: 6px 20px 14px; }
+.cy-recent li { display: flex; align-items: center; gap: 11px; padding: 12px 0; border-bottom: 1px solid var(--cy-line-soft); }
+.cy-recent li:last-child { border-bottom: 0; }
+.cy-recent strong { flex: 1; min-width: 0; font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cy-recent-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cy-purple); flex: 0 0 auto; }
+
+.cy-overview { display: flex; align-items: center; gap: 22px; }
+.cy-overview .cy-legend { flex: 1; min-width: 0; }
+.cy-overview-link {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 13px; border-top: 1px solid var(--cy-line);
+  font-size: 12px; font-weight: 600; color: var(--cy-purple);
+}
+.cy-overview-link:hover { background: var(--cy-purple-wash); }
+
+/* ============================================================= 07 设计语言 */
+
+.cy-ds { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.cy-ds-block {
+  background: #fff; border: 1px solid var(--cy-line); border-radius: var(--cy-r);
+  padding: 18px;
+}
+.cy-ds-block header { margin-bottom: 16px; }
+.cy-ds-block h2 { font-size: 14px; font-weight: 700; margin-top: 5px; }
+.cy-ds-block h2 em { font-style: normal; font-size: 11px; font-weight: 500; color: var(--cy-muted); margin-left: 4px; }
+
+.cy-ds-block:nth-child(1) { grid-column: span 2; }
+.cy-ds-block:nth-child(2) { grid-column: span 2; }
+.cy-ds-block:nth-child(3) { grid-column: span 2; }
+.cy-ds-block:nth-child(4) { grid-column: span 1; }
+.cy-ds-block:nth-child(5) { grid-column: span 1; }
+.cy-ds-block:nth-child(6) { grid-column: span 2; }
+.cy-ds-block:nth-child(7) { grid-column: span 2; }
+
+.cy-swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.cy-swatches > div { display: flex; flex-direction: column; gap: 6px; }
+.cy-swatches code { font-size: 10px; }
+.cy-swatch { display: block; height: 56px; border-radius: 8px; border: 1px solid var(--cy-line); }
+
+.cy-type-scale { display: flex; flex-direction: column; gap: 12px; }
+.cy-type-scale > div { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+
+.cy-icon-grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; }
+.cy-icon-grid span {
+  display: grid; place-items: center; aspect-ratio: 1;
+  border: 1px solid var(--cy-line); border-radius: 8px; color: var(--cy-text-2);
+}
+
+.cy-ds-stack { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.cy-ds-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.cy-ds-card { display: flex; align-items: center; gap: 12px; padding: 14px; }
+.cy-ds-card .cy-pixel-frame { width: 40px; height: 40px; flex: 0 0 auto; }
+.cy-ds-card .cy-pixel { width: 100%; height: 100%; }
+.cy-ds-card .cy-stack { flex: 1; min-width: 0; gap: 3px; }
+
+.cy-ds-data { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.cy-ds-data .cy-stat b { font-size: 30px; }
+
+/* ================================================================ responsive */
+
+@media (max-width: 1080px) {
+  .cy-ds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cy-ds-block:nth-child(n) { grid-column: span 2; }
+  .cy-icon-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+  .cy-project-grid,
+  .cy-verify-grid,
+  .cy-workbench-grid { grid-template-columns: minmax(0, 1fr); }
+  .cy-hero { grid-template-columns: minmax(0, 1fr); padding: 40px 32px 32px 84px; }
+  .cy-hero-art { min-height: 240px; }
+  .cy-hero-title { font-size: 42px; }
+}
+
+@media (max-width: 860px) {
+  .cy-topbar { gap: 14px; padding: 0 16px; overflow-x: auto; }
+  .cy-nav { flex: 0 0 auto; }
+  .cy-page { padding: 18px 16px 32px; }
+  .cy-home-stats,
+  .cy-workbench-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cy-workbench { grid-template-columns: minmax(0, 1fr); }
+  .cy-side { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--cy-line); }
+  .cy-side-menu { flex-direction: row; flex-wrap: wrap; }
+  .cy-workbench-main { padding: 18px 16px 32px; }
+  .cy-vc-body { grid-template-columns: minmax(0, 1fr); }
+  .cy-vc-portrait { max-width: 172px; }
+  .cy-icon-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .cy-swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .cy-hero { padding: 34px 20px 26px 66px; border-radius: 10px; }
+  .cy-hero-rail { width: 44px; }
+  .cy-hero-index { left: 66px; }
+  .cy-hero-title { font-size: 32px; letter-spacing: -.8px; }
+  .cy-task { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 14px; }
+  .cy-task-art { width: 44px; height: 44px; }
+  .cy-task-go { display: none; }
+  .cy-vc-actions .cy-btn { min-width: 0; }
+  .cy-ds { grid-template-columns: minmax(0, 1fr); }
+  .cy-ds-block:nth-child(n) { grid-column: span 1; }
+}
+
+/* TEMP-DEBUG */
+html{background:#ff0000 !important}
+body{background-color:#00ff00 !important;background-image:none !important}
+.cybr{outline:4px solid magenta;outline-offset:-4px}
+

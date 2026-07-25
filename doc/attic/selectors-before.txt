@@ -1,0 +1,370 @@
+*
+.achievement-row
+.achievement-row span
+.achievement-row svg
+.action-panel
+.action-panel .info-strip
+.action-panel h2
+.action-panel>p
+.app-shell
+.avatar-mini
+.banner
+.board-workspace
+.brand
+.brand small
+.brand strong
+.brand-mark
+.brand-mark.mini
+.brand>span:last-child
+.button-row
+.chain-footer
+.chain-footer a
+.chain-footer code
+.chain-footer span
+.chain-footer strong
+.check-row
+.check-row small
+.check-row strong
+.check-row.bad>span
+.check-row>div
+.check-row>span
+.choice
+.choice input
+.choice small
+.choice span
+.choice-grid
+.choice.active
+.cloud
+.cloud.c1
+.cloud.c2
+.confirm-check
+.confirm-check input
+.confirm-check small
+.confirm-check span
+.confirm-check strong
+.counter
+.credential-content
+.credential-content>p
+.credential-foot
+.credential-foot a
+.credential-foot span
+.credential-head
+.credential-head h3
+.credential-list
+.credential-row
+.credential-row.revoked .credential-content
+.credential-row.revoked .timeline-mark span
+.credential-seal
+.credential-seal small
+.credential-seal strong
+.danger-btn
+.danger-ghost
+.danger-note
+.danger-note span
+.date
+.deadline
+.desk
+.desk:after
+.evidence-box
+.eyebrow
+.file-name
+.file-name small
+.file-name strong
+.file-name>div
+.file-name>span:first-child
+.file-result
+.floor-grid
+.form-grid
+.form-section
+.form-section textarea
+.form-section textarea:focus
+.form-stack
+.form-stack fieldset
+.form-stack input
+.form-stack input:focus
+.form-stack label
+.form-stack legend
+.form-stack select
+.form-stack select:focus
+.form-stack textarea
+.form-stack textarea:disabled
+.form-stack textarea:focus
+.full
+.guild-avatar
+.guild-seal
+.hash-value
+.hash-value .icon-btn
+.hash-value code
+.hash-value small
+.hash-value>div
+.header-actions
+.hero-person
+.hero-person.portal
+.hero-person.success
+.icon-btn
+.icon-btn:hover
+.info-strip
+.info-strip svg
+.level
+.level strong
+.limit
+.live-dot
+.live-dot.checking
+.live-dot.offline
+.locked-chip
+.menu-btn
+.modal
+.modal h2
+.modal-actions
+.modal-backdrop
+.modal>.form-stack
+.modal>form
+.modal>header
+.monad-btn
+.monad-cube
+.monad-portal
+.monad-portal span
+.monad-portal.active
+.monad-text
+.monitor
+.monitor:after
+.mono
+.nav
+.nav a
+.nav a.active
+.nav.open
+.network-pill
+.network-pill>span
+.notice-board
+.notice-board i
+.notice-board i:nth-child(1)
+.notice-board i:nth-child(2)
+.notice-board i:nth-child(3)
+.npc-person
+.npc-person .body
+.onchain-preview
+.onchain-preview h2
+.onchain-preview p
+.onchain-preview>header
+.onchain-preview>header>div
+.page
+.page-actions
+.page-heading
+.page-heading h1
+.page-heading p
+.panel-icon
+.party
+.party .icon-btn
+.party code
+.party small
+.party strong
+.party strong svg
+.party-avatar
+.party>div
+.passport-book
+.passport-book:after
+.passport-layout .pixel-scene
+.passport-layout .scene-column
+.passport-summary
+.passport-summary small
+.passport-summary strong
+.passport-summary>div
+.passport-summary>div:first-child
+.passport-summary>div:last-child
+.passport-toolbar
+.passport-toolbar h2
+.passport-toolbar p
+.passport-workspace
+.pixel-dialog
+.pixel-dialog p
+.pixel-person
+.pixel-person .a1
+.pixel-person .a2
+.pixel-person .arm
+.pixel-person .body
+.pixel-person .face
+.pixel-person .hair
+.pixel-person .l1
+.pixel-person .l2
+.pixel-person .leg
+.pixel-person .tool
+.pixel-person span
+.pixel-scene
+.pixel-scene:after
+.pixel-sky
+.preview-grid
+.preview-grid small
+.preview-grid strong
+.preview-grid>div
+.preview-summary
+.preview-summary p
+.preview-summary small
+.primary-btn
+.primary-btn:disabled
+.primary-btn:hover
+.profile-avatar
+.profile-plaque
+.profile-plaque small
+.profile-plaque span
+.profile-plaque strong
+.profile-plaque>div:nth-child(2)
+.profile-plaque>div:nth-child(2) strong
+.progress-step
+.progress-step small
+.progress-step.current>span
+.progress-step.done:not(:first-child):before
+.progress-step.done>span
+.progress-step:not(:first-child):before
+.progress-step>span
+.public-statement
+.public-statement p
+.public-statement small
+.qr-btn
+.quest-icon
+.quest-list
+.quest-main p
+.quest-progress
+.quest-row
+.quest-row .icon-btn
+.quest-row:hover
+.quest-title
+.quest-title span
+.quest-title strong
+.reset-btn
+.review-actions
+.review-actions>*
+.review-desk
+.review-desk:after
+.review-version
+.review-workspace
+.role-switch
+.role-switch button
+.role-switch button.active
+.scene-caption
+.scene-caption small
+.scene-caption span
+.scene-column
+.scene-note
+.scene-note p
+.scene-note strong
+.scene-wall
+.seal-error
+.seal-missing
+.seal-revoked
+.seal-valid
+.search-box
+.search-box input
+.secondary-btn
+.secondary-btn:hover
+.section-label
+.section-label small
+.section-label span
+.section-title
+.section-title h2
+.section-title p
+.section-title>div
+.section-title>div>span
+.segmented
+.segmented button
+.segmented button.active
+.shelf
+.spin
+.sr-only
+.statement-grid
+.statement-grid small
+.statement-grid strong
+.statement-grid>div
+.statement-grid>div:nth-child(odd)
+.status-approved
+.status-badge
+.status-badge svg
+.status-issued
+.status-issuing
+.status-revoked
+.status-submitted
+.success-burst
+.success-icon
+.success-panel
+.success-panel h2
+.success-panel>p
+.success-record
+.success-record small
+.success-record strong
+.success-record>div
+.success-text
+.task-actions
+.task-actions .primary-btn
+.task-actions>span
+.task-meta
+.task-meta small
+.task-meta strong
+.task-meta>div
+.task-meta>div:first-child
+.task-meta>div:last-child
+.task-workspace
+.tech-grid
+.tech-grid small
+.tech-grid span
+.tech-grid>div
+.technical-details
+.technical-details summary
+.technical-details summary svg:last-child
+.technical-details[open] summary svg:last-child
+.timeline-mark
+.timeline-mark span
+.timeline-mark:after
+.toolbar
+.trophy
+.trust-note
+.trust-note p
+.trust-note strong
+.trust-note svg
+.tx-panel
+.tx-panel p
+.tx-panel strong
+.tx-panel>div:last-child
+.tx-ring
+.tx-steps
+.tx-steps i
+.tx-steps span
+.tx-steps span.active
+.tx-steps span.done
+.tx-visual
+.upload-zone
+.upload-zone span
+.upload-zone strong
+.upload-zone:hover
+.verified-chip
+.verify-aside
+.verify-aside h2
+.verify-grid
+.verify-header
+.verify-header small
+.verify-header strong
+.verify-header>div
+.verify-header>div>span:last-child
+.verify-main
+.verify-missing
+.verify-page
+.verify-parties
+.verify-result
+.verify-result h1
+.verify-result p
+.verify-revoked
+.verify-shell
+.wallet-btn
+.wallet-btn svg
+.wallet-btn:hover
+.window
+.window:after
+.window:before
+.workspace
+.world-header
+.world-layout
+a
+body
+button
+code
+input
+select
+textarea

@@ -1,0 +1,331 @@
+/* CYBR_ design language — replicated from design board 07「设计语言 / Design System」.
+   Everything is scoped under .cybr so the legacy Proof-of-Quest pages keep their own look. */
+
+.cybr {
+  /* Color — board 07「配色 Color」swatch row: #7B5CFF #C6FF00 #0B0B0B #F5F5F5 #FFFFFF */
+  --cy-purple: #7b5cff;
+  --cy-purple-ink: #5a3fe0;
+  --cy-purple-wash: #efebff;
+  --cy-lime: #c6ff00;
+  --cy-lime-wash: #f0ffc4;
+  --cy-lime-ink: #5f7d10;
+  --cy-black: #0b0b0b;
+  --cy-white: #fff;
+
+  /* Neutrals derived from the board's card / divider tones */
+  --cy-bg: #f5f5f5;
+  --cy-card: #fff;
+  --cy-line: #e7e7ea;
+  --cy-line-soft: #f0f0f2;
+  --cy-text: #0b0b0b;
+  --cy-text-2: #55555e;
+  --cy-muted: #8f8f99;
+
+  /* Status hues — board 07「标签 Tags」*/
+  --cy-run: #7b5cff;
+  --cy-wait: #f5b301;
+  --cy-check: #16a34a;
+  --cy-revoked: #f0475f;
+
+  /* Type — board 07「字体 Typography」思源黑体 / Source Han Sans */
+  --cy-font: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --cy-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --cy-r: 10px;
+  --cy-r-sm: 6px;
+  --cy-shadow: 0 1px 2px rgba(11, 11, 12, .04), 0 8px 24px rgba(11, 11, 12, .05);
+
+  font-family: var(--cy-font);
+  color: var(--cy-text);
+  background: var(--cy-bg);
+  min-height: 100vh;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  isolation: isolate;
+}
+
+/* The legacy Proof-of-Quest stylesheet paints a beige canvas on <body>; this keeps
+   it from showing past the end of CYBR_ content. */
+.cybr::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--cy-bg);
+}
+
+.cybr *,
+.cybr *::before,
+.cybr *::after { box-sizing: border-box; }
+
+/* Resets go through :where() so they carry zero specificity — a plain `.cy-btn-dark`
+   must be able to win without every variant needing a `.cybr` prefix. */
+:where(.cybr h1, .cybr h2, .cybr h3, .cybr h4, .cybr p, .cybr figure) { margin: 0; }
+:where(.cybr ul) { margin: 0; padding: 0; list-style: none; }
+:where(.cybr button) { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+:where(.cybr a) { color: inherit; text-decoration: none; }
+.cybr code, .cybr .cy-mono { font-family: var(--cy-mono); }
+.cybr img { display: block; max-width: 100%; }
+
+/* Type scale: 标题超大 32/40 · 大标题 24/32 · 正文 14/22 */
+.cy-d1 { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -.5px; }
+.cy-d2 { font-size: 24px; line-height: 32px; font-weight: 700; letter-spacing: -.3px; }
+.cy-h3 { font-size: 16px; line-height: 24px; font-weight: 700; }
+.cy-body { font-size: 14px; line-height: 22px; font-weight: 400; }
+.cy-sm { font-size: 12px; line-height: 18px; }
+.cy-xs { font-size: 11px; line-height: 16px; }
+.cy-label { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--cy-muted); }
+.cy-muted { color: var(--cy-muted); }
+.cy-dim { color: var(--cy-text-2); }
+
+.cy-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ------------------------------------------------------------ board frame
+
+   Every screen on the design deck is a 1672x941 slide: a small index label in the
+   top-left, then the product UI sitting on the #F5F5F5 canvas. The board is built at
+   that native size so a screenshot lines up pixel-for-pixel with UI/0N.jpg; `.cy-stage`
+   scales the whole slide down to whatever viewport it is dropped into. */
+
+.cy-stage {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--cy-bg);
+}
+
+.cy-board {
+  width: 1672px;
+  height: 941px;
+  flex: 0 0 auto;
+  transform-origin: center center;
+  padding: 20px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  background: var(--cy-bg);
+  color: var(--cy-text);
+}
+
+.cy-board-label {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  height: 38px;
+  padding-left: 8px;
+  font-size: 19px;
+  color: #6f6f78;
+}
+.cy-board-label b { font-family: var(--cy-mono); color: var(--cy-purple); font-weight: 700; font-size: 20px; }
+.cy-board-label strong { color: #3d3d45; font-weight: 500; }
+.cy-board-label span { font-family: var(--cy-mono); font-size: 17px; color: #9a9aa3; }
+
+.cy-board-body { flex: 1; min-height: 0; display: flex; gap: 22px; }
+
+/* The white app surface each slide is built on. */
+.cy-surface {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--cy-card);
+  border: 1px solid #ebebee;
+  border-radius: 22px;
+}
+
+.cy-logo { display: inline-flex; align-items: center; gap: 11px; font-weight: 800; font-size: 25px; letter-spacing: .2px; }
+.cy-logo svg { flex: 0 0 auto; }
+.cy-logo u { text-decoration: none; color: var(--cy-purple); }
+
+/* Mono micro-type used for nav items, coordinates and corner slugs. */
+.cy-mono-nav {
+  font-family: var(--cy-mono);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: #23232a;
+}
+.cy-slash { color: var(--cy-purple); font-size: 15px; font-family: var(--cy-mono); }
+
+/* Vertical rail text running up the left edge of boards 01 / 04 / 05 / 06. */
+.cy-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  font-family: var(--cy-mono);
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: #b4b4bc;
+}
+.cy-rail span { writing-mode: vertical-rl; transform: rotate(180deg); }
+.cy-rail i { display: block; width: 1px; background: #dcdce1; }
+
+/* ---------------------------------------------- buttons — board「按钮 Buttons」*/
+
+.cy-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 38px; padding: 0 16px; border-radius: var(--cy-r-sm);
+  font-size: 13px; font-weight: 600; white-space: nowrap;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.cy-btn svg { flex: 0 0 auto; }
+
+.cy-btn-primary { background: var(--cy-purple); color: #fff; }
+.cy-btn-primary:hover { background: var(--cy-purple-ink); }
+
+.cy-btn-dark { background: var(--cy-black); color: #fff; }
+.cy-btn-dark:hover { background: #26262b; }
+
+.cy-btn-ghost { background: #fff; color: var(--cy-text); border: 1px solid var(--cy-line); }
+.cy-btn-ghost:hover { background: var(--cy-line-soft); }
+
+.cy-btn-text { height: auto; padding: 0; color: var(--cy-purple); font-weight: 600; }
+.cy-btn-text:hover { color: var(--cy-purple-ink); }
+
+.cy-btn-lime { background: var(--cy-lime); color: var(--cy-black); }
+.cy-btn-lime:hover { background: #b4f52f; }
+
+.cy-btn-sm { height: 30px; padding: 0 11px; font-size: 12px; }
+.cy-btn-lg { height: 44px; padding: 0 20px; font-size: 14px; }
+
+.cy-icon-btn {
+  display: inline-grid; place-items: center; flex: 0 0 auto;
+  width: 32px; height: 32px; border-radius: var(--cy-r-sm);
+  border: 1px solid var(--cy-line); background: #fff; color: var(--cy-text-2);
+}
+.cy-icon-btn:hover { background: var(--cy-line-soft); color: var(--cy-text); }
+.cy-icon-btn-plain { border-color: transparent; background: transparent; }
+
+/* ---------------------------------------------------- tags — board「标签 Tags」*/
+
+.cy-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 22px; padding: 0 9px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; white-space: nowrap;
+}
+.cy-tag::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.cy-tag-plain::before { display: none; }
+
+.cy-tag-run { background: var(--cy-purple-wash); color: var(--cy-purple-ink); }
+.cy-tag-wait { background: #fff5da; color: #9a6b00; }
+.cy-tag-check { background: #eafbe9; color: #147a34; }
+.cy-tag-done { background: #eef1f6; color: #4d5566; }
+.cy-tag-revoked { background: #ffeef1; color: #c02341; }
+.cy-tag-lime { background: #eeffcc; color: var(--cy-lime-ink); }
+
+.cy-chip {
+  display: inline-flex; align-items: center; height: 26px; padding: 0 11px;
+  border-radius: 999px; border: 1px solid var(--cy-line);
+  font-size: 12px; color: var(--cy-text-2); background: #fff;
+}
+
+/* Small "已认证机构" style seal */
+.cy-seal {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 20px; padding: 0 8px; border-radius: 999px;
+  background: var(--cy-lime); color: var(--cy-black);
+  font-size: 10px; font-weight: 700;
+}
+
+/* --------------------------------------------------- cards — board「卡片 Cards」*/
+
+.cy-card {
+  background: var(--cy-card);
+  border: 1px solid var(--cy-line);
+  border-radius: var(--cy-r);
+}
+.cy-card-pad { padding: 20px; }
+.cy-card-hover { transition: border-color .15s, box-shadow .15s; }
+.cy-card-hover:hover { border-color: #d6d6dc; box-shadow: var(--cy-shadow); }
+
+.cy-card-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px; border-bottom: 1px solid var(--cy-line);
+}
+.cy-card-head h2 { font-size: 15px; font-weight: 700; }
+.cy-card-head .cy-card-head-end { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+/* Generic key/value rows used by 03 / 04 / 06 */
+.cy-kv { display: flex; align-items: flex-start; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--cy-line-soft); }
+.cy-kv:last-child { border-bottom: 0; }
+.cy-kv dt { flex: 0 0 88px; font-size: 12px; color: var(--cy-muted); }
+.cy-kv dd { margin: 0; flex: 1; min-width: 0; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.cy-grid { display: grid; gap: 16px; }
+.cy-row { display: flex; align-items: center; gap: 10px; }
+.cy-spread { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.cy-stack { display: flex; flex-direction: column; }
+
+.cy-divider { height: 1px; background: var(--cy-line); border: 0; margin: 0; }
+
+/* ------------------------------------------------------------- avatars */
+
+.cy-avatar {
+  display: grid; place-items: center; flex: 0 0 auto;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--cy-black); color: #fff;
+  font-size: 13px; font-weight: 700;
+}
+.cy-avatar-purple { background: var(--cy-purple); }
+.cy-avatar-lime { background: var(--cy-lime); color: var(--cy-black); }
+.cy-avatar-sm { width: 26px; height: 26px; font-size: 11px; }
+.cy-avatar-lg { width: 52px; height: 52px; font-size: 18px; }
+
+/* ------------------------------------- progress + data viz — board「数据可视化」*/
+
+.cy-bar { height: 4px; border-radius: 999px; background: var(--cy-line); overflow: hidden; }
+.cy-bar > i { display: block; height: 100%; border-radius: 999px; background: var(--cy-purple); }
+.cy-bar-lime > i { background: var(--cy-lime); }
+.cy-bar-check > i { background: var(--cy-check); }
+
+.cy-stat { display: flex; flex-direction: column; gap: 4px; }
+.cy-stat b { font-size: 26px; line-height: 32px; font-weight: 700; letter-spacing: -.6px; }
+.cy-stat span { font-size: 12px; color: var(--cy-muted); }
+
+.cy-donut { display: grid; place-items: center; position: relative; }
+.cy-donut figcaption { position: absolute; text-align: center; line-height: 1.15; }
+.cy-donut figcaption b { display: block; font-size: 22px; font-weight: 700; }
+.cy-donut figcaption span { font-size: 10px; color: var(--cy-muted); }
+
+.cy-legend { display: flex; flex-direction: column; gap: 9px; }
+.cy-legend > div { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.cy-legend i { width: 8px; height: 8px; border-radius: 2px; flex: 0 0 auto; }
+.cy-legend b { margin-left: auto; font-weight: 600; }
+
+/* --------------------------------------------------------- form bits */
+
+.cy-search {
+  display: flex; align-items: center; gap: 8px;
+  height: 34px; padding: 0 12px; border-radius: var(--cy-r-sm);
+  border: 1px solid var(--cy-line); background: #fff; color: var(--cy-muted);
+}
+.cy-search input { border: 0; outline: 0; background: none; font-size: 13px; width: 150px; color: var(--cy-text); }
+.cy-search input::placeholder { color: var(--cy-muted); }
+
+.cy-tabs { display: flex; align-items: center; gap: 22px; border-bottom: 1px solid var(--cy-line); }
+.cy-tabs button {
+  position: relative; padding: 11px 0; font-size: 13px; font-weight: 600; color: var(--cy-muted);
+}
+.cy-tabs button.on { color: var(--cy-text); }
+.cy-tabs button.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--cy-black); }
+
+.cy-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cy-pills button {
+  height: 28px; padding: 0 13px; border-radius: 999px;
+  font-size: 12px; font-weight: 500; color: var(--cy-text-2); background: var(--cy-line-soft);
+}
+.cy-pills button.on { background: var(--cy-black); color: #fff; }
+
+/* ------------------------------------------------------- pixel artwork */
+
+/* The board uses dithered black/white pixel plates as project + portrait art.
+   Rendered from a deterministic seed so every card keeps a stable image. */
+.cy-pixel { display: block; image-rendering: pixelated; background: #d9d9de; }
+.cy-pixel-frame { position: relative; overflow: hidden; border-radius: var(--cy-r-sm); background: var(--cy-black); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cybr *, .cybr *::before, .cybr *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
