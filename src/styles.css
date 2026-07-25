@@ -61,6 +61,50 @@ main { min-height: 100vh; display: flex; flex-direction: column; }
   pointer-events: none;
 }
 
+.story-console {
+  width: min(calc(100vw - 36px), 1280px);
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 14px;
+  color: #e8e0ff;
+}
+.cast-panel, .log-panel {
+  border: 2px solid #66528e;
+  background: #211c35;
+  box-shadow: 6px 6px 0 #0c0917;
+  padding: 14px 16px;
+}
+.console-label {
+  color: #c7b2f4;
+  font: 800 11px/1.2 monospace;
+  letter-spacing: .12em;
+}
+.cast-list { display: flex; gap: 18px; margin-top: 14px; }
+.cast-list > div { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.cast-list span { font-size: 13px; font-weight: 800; }
+.cast-list small { display: block; color: #9488aa; font-size: 10px; font-weight: 500; white-space: nowrap; }
+.avatar {
+  width: 34px; height: 34px; flex: 0 0 auto; display: block;
+  border: 2px solid #d3b869; box-shadow: inset 0 0 0 3px #312845;
+  image-rendering: pixelated;
+}
+.designer-avatar { background: linear-gradient(#342a42 0 30%, #edc39f 30% 58%, #7359a8 58%); }
+.guild-avatar { background: linear-gradient(#6a3e35 0 30%, #e7b28e 30% 58%, #cb7a5f 58%); }
+.hr-avatar { background: linear-gradient(#2c293e 0 30%, #e3b793 30% 58%, #4f678f 58%); }
+.log-panel p {
+  margin: 10px 0 0;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  border-top: 1px solid #3c3452;
+  padding-top: 9px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.log-panel p strong { color: #80c9ea; }
+.log-panel p span { color: #cec5da; }
+
 .dialog-backdrop {
   position: fixed; inset: 0; z-index: 20; display: grid; place-items: center;
   padding: 20px; background: #0a0811a6; backdrop-filter: blur(3px);
@@ -111,4 +155,7 @@ textarea { min-height: 92px; resize: vertical; border: 2px solid #806b80; backgr
   .game-root { width: calc(100vw - 20px); }
   .game-shell { padding: 10px; align-items: start; }
   .controls { bottom: 16px; font-size: 11px; }
+  .story-console { width: calc(100vw - 20px); grid-template-columns: 1fr; }
+  .cast-list { justify-content: space-between; }
+  .log-panel p { grid-template-columns: 1fr; gap: 3px; }
 }
