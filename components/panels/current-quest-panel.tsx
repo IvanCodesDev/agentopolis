@@ -30,6 +30,10 @@ const statusIndex: Record<QuestStatus, number> = {
   INVITED: 0,
   ACCEPTED: 1,
   SUBMITTED: 2,
+  V1_SUBMITTED: 2,
+  REVISION_REQUESTED: 2,
+  V2_SUBMITTED: 2,
+  APPROVED: 2,
   ISSUED: 3,
   REVOKED: 3,
 };

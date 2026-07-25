@@ -26,6 +26,26 @@ const statusPresentation: Record<
     icon: CircleCheck,
     className: "questStatusInvited",
   },
+  V1_SUBMITTED: {
+    label: "V1 · 待反馈",
+    icon: CircleCheck,
+    className: "questStatusInvited",
+  },
+  REVISION_REQUESTED: {
+    label: "REVISION · 修改中",
+    icon: CircleCheck,
+    className: "questStatusInvited",
+  },
+  V2_SUBMITTED: {
+    label: "V2 · 待验收",
+    icon: CircleCheck,
+    className: "questStatusInvited",
+  },
+  APPROVED: {
+    label: "APPROVED · 待签发",
+    icon: CircleCheck,
+    className: "questStatusSuccess",
+  },
   ISSUED: {
     label: "ISSUED · 已铭刻",
     icon: BadgeCheck,

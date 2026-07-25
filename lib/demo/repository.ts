@@ -63,7 +63,7 @@ export function loadDemoSnapshot(storage?: Storage): DemoSnapshot {
     if (!saved) return fallback;
     const parsed: unknown = JSON.parse(saved);
     if (!isDemoSnapshot(parsed)) return fallback;
-    const credentials = Array.isArray(parsed.credentials)
+    const credentials: DemoCredential[] = Array.isArray(parsed.credentials)
       ? parsed.credentials.map((credential) => ({
           ...credential,
           status: credential.status === "REVOKED" ? "REVOKED" : "VALID",

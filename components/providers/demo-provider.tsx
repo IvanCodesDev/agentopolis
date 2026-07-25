@@ -16,6 +16,7 @@ import {
   resetDemoSnapshot,
   saveDemoSnapshot,
 } from "@/lib/demo/repository";
+import { createEvidenceHash } from "@/lib/demo/evidence";
 import { createSeedSnapshot } from "@/lib/demo/seed";
 import type {
   DemoCredential,
@@ -24,9 +25,14 @@ import type {
   Quest,
   QuestFilter,
   QuestSubmission,
+  PlayerPosition,
   WalletDemoState,
 } from "@/lib/demo/types";
 import type { CreateQuestInput } from "@/lib/demo/validation";
+
+export type DemoActionResult =
+  | { ok: true }
+  | { ok: false; message: string };
 
 interface DemoContextValue {
   snapshot: DemoSnapshot;
@@ -41,9 +47,27 @@ interface DemoContextValue {
   revokeCredential: (id: string) => DemoCredential;
   resetDemo: () => void;
   setRole: (role: DemoRole) => void;
+  startStory: () => DemoActionResult;
+  inviteDesigner: () => DemoActionResult;
+  submitVersion: (
+    id: string,
+    version: 1 | 2,
+    submission: QuestSubmission,
+  ) => Promise<DemoActionResult>;
+  requestRevision: (id: string, feedback: string) => DemoActionResult;
+  approveQuest: (id: string) => DemoActionResult;
+  addCredentialToPassport: (id: string) => DemoActionResult;
+  verifyCredential: (id: string) => DemoActionResult;
+  savePlayerPosition: (position: PlayerPosition) => void;
 }
 
 const DemoContext = createContext<DemoContextValue | null>(null);
+
+const accepted: DemoActionResult = { ok: true };
+
+function rejected(message: string): DemoActionResult {
+  return { ok: false, message };
+}
 
 export function DemoProvider({ children }: PropsWithChildren) {
   const [snapshot, setSnapshot] = useState<DemoSnapshot>(createSeedSnapshot);
@@ -87,6 +111,36 @@ export function DemoProvider({ children }: PropsWithChildren) {
     [updateSnapshot],
   );
 
+  const startStory = useCallback(() => {
+    let result: DemoActionResult = rejected("当前无法开始故事");
+    updateSnapshot((current) => {
+      if (
+        current.currentRole !== "designer" ||
+        current.storyStage !== "INTRO"
+      ) {
+        return current;
+      }
+      result = accepted;
+      return { ...current, storyStage: "TASK_CREATED" };
+    });
+    return result;
+  }, [updateSnapshot]);
+
+  const inviteDesigner = useCallback(() => {
+    let result: DemoActionResult = rejected("请以公会身份创建邀请");
+    updateSnapshot((current) => {
+      if (
+        current.currentRole !== "guild" ||
+        current.storyStage !== "TASK_CREATED"
+      ) {
+        return current;
+      }
+      result = accepted;
+      return { ...current, storyStage: "DESIGNER_INVITED" };
+    });
+    return result;
+  }, [updateSnapshot]);
+
   const addQuest = useCallback(
     (input: CreateQuestInput) => {
       let createdQuest: Quest | null = null;
@@ -127,8 +181,14 @@ export function DemoProvider({ children }: PropsWithChildren) {
     (id: string) => {
       updateSnapshot((current) => {
         if (current.currentRole !== "designer") return current;
+        const canAdvanceStory =
+          current.storyStage === "DESIGNER_INVITED" &&
+          id === current.activeQuestId;
         return {
           ...current,
+          storyStage: canAdvanceStory
+            ? "QUEST_ACCEPTED"
+            : current.storyStage,
           quests: current.quests.map((quest) =>
             quest.id === id && quest.status === "INVITED"
               ? { ...quest, status: "ACCEPTED" }
@@ -136,6 +196,117 @@ export function DemoProvider({ children }: PropsWithChildren) {
           ),
         };
       });
+    },
+    [updateSnapshot],
+  );
+
+  const submitVersion = useCallback(
+    async (
+      id: string,
+      version: 1 | 2,
+      submission: QuestSubmission,
+    ): Promise<DemoActionResult> => {
+      const current = snapshotRef.current;
+      const expectedStage =
+        version === 1 ? "QUEST_ACCEPTED" : "REVISION_REQUESTED";
+      const expectedStatus =
+        version === 1 ? "ACCEPTED" : "REVISION_REQUESTED";
+      const quest = current.quests.find((item) => item.id === id);
+      if (
+        current.currentRole !== "designer" ||
+        current.storyStage !== expectedStage ||
+        quest?.status !== expectedStatus
+      ) {
+        return rejected(
+          version === 1
+            ? "请先接受主线任务"
+            : "请先查看公会的修改意见",
+        );
+      }
+      const evidenceHash = await createEvidenceHash(
+        id,
+        version,
+        submission.fileName,
+        submission.publicSummary,
+      );
+      updateSnapshot((latest) => ({
+        ...latest,
+        storyStage: version === 1 ? "V1_SUBMITTED" : "V2_SUBMITTED",
+        project: {
+          ...latest.project,
+          currentVersion: version,
+          evidenceHash,
+          ...(version === 1
+            ? { v1EvidenceHash: evidenceHash }
+            : { v2EvidenceHash: evidenceHash }),
+        },
+        quests: latest.quests.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                status:
+                  version === 1 ? "V1_SUBMITTED" : "V2_SUBMITTED",
+                submission: { ...submission, version, evidenceHash },
+              }
+            : item,
+        ),
+      }));
+      return accepted;
+    },
+    [updateSnapshot],
+  );
+
+  const requestRevision = useCallback(
+    (id: string, feedback: string) => {
+      let result: DemoActionResult = rejected("当前没有等待反馈的 V1");
+      updateSnapshot((current) => {
+        const quest = current.quests.find((item) => item.id === id);
+        if (
+          current.currentRole !== "guild" ||
+          current.storyStage !== "V1_SUBMITTED" ||
+          quest?.status !== "V1_SUBMITTED"
+        ) {
+          return current;
+        }
+        result = accepted;
+        return {
+          ...current,
+          storyStage: "REVISION_REQUESTED",
+          project: { ...current.project, revisionFeedback: feedback },
+          quests: current.quests.map((item) =>
+            item.id === id
+              ? { ...item, status: "REVISION_REQUESTED" }
+              : item,
+          ),
+        };
+      });
+      return result;
+    },
+    [updateSnapshot],
+  );
+
+  const approveQuest = useCallback(
+    (id: string) => {
+      let result: DemoActionResult = rejected("当前没有等待验收的 V2");
+      updateSnapshot((current) => {
+        const quest = current.quests.find((item) => item.id === id);
+        if (
+          current.currentRole !== "guild" ||
+          current.storyStage !== "V2_SUBMITTED" ||
+          quest?.status !== "V2_SUBMITTED"
+        ) {
+          return current;
+        }
+        result = accepted;
+        return {
+          ...current,
+          storyStage: "WORK_APPROVED",
+          quests: current.quests.map((item) =>
+            item.id === id ? { ...item, status: "APPROVED" } : item,
+          ),
+        };
+      });
+      return result;
     },
     [updateSnapshot],
   );
@@ -168,7 +339,7 @@ export function DemoProvider({ children }: PropsWithChildren) {
         const quest = current.quests.find((item) => item.id === id);
         if (
           current.currentRole !== "guild" ||
-          quest?.status !== "SUBMITTED" ||
+          (quest?.status !== "SUBMITTED" && quest?.status !== "APPROVED") ||
           !quest.submission
         ) {
           throw new Error("Quest must be submitted before issuing");
@@ -196,10 +367,18 @@ export function DemoProvider({ children }: PropsWithChildren) {
           issuedAt,
           transactionHash: `0x${hashBody}`,
           status: "VALID",
+          evidenceHash:
+            quest.submission.evidenceHash ?? current.project.v2EvidenceHash,
+          inPassport: false,
+          verificationCount: 0,
         };
 
         return {
           ...current,
+          storyStage:
+            current.storyStage === "WORK_APPROVED"
+              ? "CREDENTIAL_ISSUED"
+              : current.storyStage,
           credentials: [...current.credentials, issuedCredential],
           quests: current.quests.map((item) =>
             item.id === id
@@ -209,6 +388,70 @@ export function DemoProvider({ children }: PropsWithChildren) {
         };
       });
       return issuedCredential as DemoCredential;
+    },
+    [updateSnapshot],
+  );
+
+  const addCredentialToPassport = useCallback(
+    (id: string) => {
+      let result: DemoActionResult = rejected("当前没有可加入护照的凭证");
+      updateSnapshot((current) => {
+        const credential = current.credentials.find((item) => item.id === id);
+        if (
+          current.currentRole !== "designer" ||
+          current.storyStage !== "CREDENTIAL_ISSUED" ||
+          credential?.status !== "VALID"
+        ) {
+          return current;
+        }
+        result = accepted;
+        return {
+          ...current,
+          storyStage: "PORTFOLIO_SHARED",
+          credentials: current.credentials.map((item) =>
+            item.id === id ? { ...item, inPassport: true } : item,
+          ),
+        };
+      });
+      return result;
+    },
+    [updateSnapshot],
+  );
+
+  const verifyCredential = useCallback(
+    (id: string) => {
+      let result: DemoActionResult = rejected("当前凭证尚未公开");
+      updateSnapshot((current) => {
+        const credential = current.credentials.find((item) => item.id === id);
+        if (
+          current.currentRole !== "hr" ||
+          current.storyStage !== "PORTFOLIO_SHARED" ||
+          !credential?.inPassport
+        ) {
+          return current;
+        }
+        result = accepted;
+        return {
+          ...current,
+          storyStage: "HR_VERIFIED",
+          credentials: current.credentials.map((item) =>
+            item.id === id
+              ? {
+                  ...item,
+                  verificationCount: (item.verificationCount ?? 0) + 1,
+                }
+              : item,
+          ),
+        };
+      });
+      return result;
+    },
+    [updateSnapshot],
+  );
+
+  const savePlayerPosition = useCallback(
+    (playerPosition: PlayerPosition) => {
+      updateSnapshot((current) => ({ ...current, playerPosition }));
     },
     [updateSnapshot],
   );
@@ -233,6 +476,12 @@ export function DemoProvider({ children }: PropsWithChildren) {
         };
         return {
           ...current,
+          storyStage:
+            current.storyStage === "HR_VERIFIED" ||
+            current.storyStage === "PORTFOLIO_SHARED" ||
+            current.storyStage === "CREDENTIAL_ISSUED"
+              ? "CREDENTIAL_REVOKED"
+              : current.storyStage,
           credentials: current.credentials.map((item) =>
             item.id === id ? revokedCredential! : item,
           ),
@@ -262,30 +511,46 @@ export function DemoProvider({ children }: PropsWithChildren) {
   const value = useMemo(
     () => ({
       acceptQuest,
+      addCredentialToPassport,
       addQuest,
+      approveQuest,
+      inviteDesigner,
       issueCredential,
       resetDemo,
       revokeCredential,
+      requestRevision,
+      savePlayerPosition,
       selectedQuest,
       selectQuest: setSelectedQuestId,
       snapshot,
       setFilter,
       setRole,
       setWalletState,
+      startStory,
       submitQuest,
+      submitVersion,
+      verifyCredential,
     }),
     [
       acceptQuest,
+      addCredentialToPassport,
       addQuest,
+      approveQuest,
+      inviteDesigner,
       issueCredential,
       resetDemo,
       revokeCredential,
+      requestRevision,
+      savePlayerPosition,
       selectedQuest,
       snapshot,
       setFilter,
       setRole,
       setWalletState,
+      startStory,
       submitQuest,
+      submitVersion,
+      verifyCredential,
     ],
   );
 
