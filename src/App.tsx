@@ -715,53 +715,59 @@ function App() {
         </div>
       </header>
 
-      <section className="game-shell">
-        <div ref={gameRoot} className="game-root" />
-        <aside className="story-guide">
-          <div className="guide-heading">
-            <span>{guide.chapter}</span>
-            <strong>{guide.title}</strong>
+      <section className="experience-layout">
+        <section className="game-shell">
+          <div ref={gameRoot} className="game-root" />
+          <div className="controls">
+            <span>移动：WASD / 方向键</span>
+            <span>互动：靠近目标后按 E</span>
           </div>
-          <p>{guide.story}</p>
-          <div className="guide-objective">
-            <span>下一站</span>
-            <strong>◆ {guide.destination}</strong>
-            <small>{guide.action}</small>
-          </div>
-          {actor !== guide.actor && stage !== "HR_VERIFIED" && (
-            <button onClick={() => setActor(guide.actor)}>
-              切换为
-              {guide.actor === "designer"
-                ? "设计师"
-                : guide.actor === "guild"
-                  ? "工作室"
-                  : "HR访客"}
-            </button>
-          )}
-        </aside>
-        <div className="controls">
-          WASD / 方向键移动 · E 互动 · 按故事提示切换设计师 / 工作室 / HR
-        </div>
-      </section>
+        </section>
 
-      <section className="story-console">
-        <div className="cast-panel">
-          <span className="console-label">STORY CHARACTERS</span>
-          <div className="cast-list">
-            <div><i className="avatar designer-avatar" /><span>林沐<small>自由设计师</small></span></div>
-            <div><i className="avatar guild-avatar" /><span>岚姐<small>工作室负责人</small></span></div>
-            <div><i className="avatar hr-avatar" /><span>陈经理<small>招聘方 HR</small></span></div>
-          </div>
-        </div>
-        <div className="log-panel" aria-live="polite">
-          <span className="console-label">STORY LOG · {visibleLogs.length}/4</span>
-          {visibleLogs.map((entry) => (
-            <p key={entry.stage}>
-              <strong>{entry.speaker}</strong>
-              <span>{entry.text}</span>
-            </p>
-          ))}
-        </div>
+        <aside className="story-sidebar">
+          <section className="story-guide">
+            <div className="guide-heading">
+              <span>{guide.chapter}</span>
+              <strong>{guide.title}</strong>
+            </div>
+            <p>{guide.story}</p>
+            <div className="guide-objective">
+              <span>下一站</span>
+              <strong>◆ {guide.destination}</strong>
+              <small>{guide.action}</small>
+            </div>
+            {actor !== guide.actor && stage !== "HR_VERIFIED" && (
+              <button onClick={() => setActor(guide.actor)}>
+                切换为
+                {guide.actor === "designer"
+                  ? "设计师"
+                  : guide.actor === "guild"
+                    ? "工作室"
+                    : "HR访客"}
+              </button>
+            )}
+          </section>
+
+          <section className="story-console">
+            <div className="cast-panel">
+              <span className="console-label">STORY CHARACTERS</span>
+              <div className="cast-list">
+                <div><i className="avatar designer-avatar" /><span>林沐<small>自由设计师</small></span></div>
+                <div><i className="avatar guild-avatar" /><span>岚姐<small>工作室负责人</small></span></div>
+                <div><i className="avatar hr-avatar" /><span>陈经理<small>招聘方 HR</small></span></div>
+              </div>
+            </div>
+            <div className="log-panel" aria-live="polite">
+              <span className="console-label">STORY LOG · {visibleLogs.length}/4</span>
+              {visibleLogs.map((entry) => (
+                <p key={entry.stage}>
+                  <strong>{entry.speaker}</strong>
+                  <span>{entry.text}</span>
+                </p>
+              ))}
+            </div>
+          </section>
+        </aside>
       </section>
 
       {dialog}
