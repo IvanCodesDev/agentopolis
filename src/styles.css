@@ -48,6 +48,32 @@ main { min-height: 100vh; display: flex; flex-direction: column; }
   background: #8db273;
 }
 .game-root canvas { width: 100% !important; height: 100% !important; }
+.story-guide {
+  position: absolute;
+  top: 34px;
+  left: max(34px, calc((100% - min(calc(100vw - 36px), calc((100vh - 140px) * 16 / 9))) / 2 + 18px));
+  z-index: 4;
+  width: min(330px, 34vw);
+  color: #352943;
+  background: #fff2ccf2;
+  border: 3px solid #60487f;
+  box-shadow: 6px 6px 0 #17112699;
+  padding: 14px;
+  pointer-events: auto;
+}
+.guide-heading { display: grid; gap: 4px; border-bottom: 2px solid #d8b96c; padding-bottom: 9px; }
+.guide-heading span { color: #75569e; font: 900 11px monospace; letter-spacing: .14em; }
+.guide-heading strong { font-size: 17px; }
+.story-guide > p { margin: 10px 0; font-size: 13px; line-height: 1.55; color: #665669; }
+.guide-objective { display: grid; gap: 4px; padding: 9px; background: #ead9aa; border-left: 4px solid #8d68bc; }
+.guide-objective span { font: 800 10px monospace; color: #796782; text-transform: uppercase; }
+.guide-objective strong { color: #3f3154; font-size: 14px; }
+.guide-objective small { color: #6e626d; line-height: 1.4; }
+.story-guide button {
+  width: 100%; margin-top: 9px; padding: 8px 10px;
+  color: white; background: #6d55a5; border: 2px solid #403058;
+  font-weight: 800; box-shadow: 3px 3px 0 #2d223b;
+}
 .controls {
   position: absolute;
   bottom: 28px;
@@ -155,6 +181,14 @@ textarea { min-height: 92px; resize: vertical; border: 2px solid #806b80; backgr
   .game-root { width: calc(100vw - 20px); }
   .game-shell { padding: 10px; align-items: start; }
   .controls { bottom: 16px; font-size: 11px; }
+  .story-guide {
+    position: relative;
+    inset: auto;
+    width: calc(100vw - 20px);
+    margin: 0 auto 10px;
+    order: -1;
+  }
+  .game-shell { display: flex; flex-direction: column; }
   .story-console { width: calc(100vw - 20px); grid-template-columns: 1fr; }
   .cast-list { justify-content: space-between; }
   .log-panel p { grid-template-columns: 1fr; gap: 3px; }

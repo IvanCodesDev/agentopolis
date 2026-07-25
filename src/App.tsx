@@ -115,6 +115,123 @@ const STORY_LOGS: Array<{
   },
 ];
 
+const STORY_GUIDES: Record<
+  StoryStage,
+  {
+    chapter: string;
+    title: string;
+    story: string;
+    actor: Actor;
+    destination: string;
+    action: string;
+  }
+> = {
+  INTRO: {
+    chapter: "序章",
+    title: "有作品，却没有可信经历",
+    story: "林沐完成过不少商业设计，但项目署名属于上游，聊天截图又包含不能公开的客户资料。",
+    actor: "designer",
+    destination: "设计师小屋 / 无署名作品墙",
+    action: "靠近小屋按 E，了解她为什么需要贡献凭证。",
+  },
+  TASK_CREATED: {
+    chapter: "第一章",
+    title: "工作室收到真实客户订单",
+    story: "光合设计工作室负责获客、报价和客户沟通。它不会被平台取代，只把部分执行工作匿名派给林沐。",
+    actor: "guild",
+    destination: "任务公会",
+    action: "切换为工作室，前往公会创建邀请。",
+  },
+  DESIGNER_INVITED: {
+    chapter: "第二章",
+    title: "设计师确认公开边界",
+    story: "邀请只包含电商详情页、执行设计师和截止时间，不包含客户名称、报价与利润。",
+    actor: "designer",
+    destination: "任务公会 / 甲方联络人",
+    action: "切换为设计师，查看范围并接受任务。",
+  },
+  QUEST_ACCEPTED: {
+    chapter: "第三章",
+    title: "第一次真实交付",
+    story: "林沐开始制作六张详情页。原始设计文件留在私密空间，只为验收版本生成数字指纹。",
+    actor: "designer",
+    destination: "设计工作台",
+    action: "前往工作台，填写匿名摘要并提交 V1。",
+  },
+  V1_SUBMITTED: {
+    chapter: "第四章",
+    title: "贡献不是一次点击",
+    story: "现实项目通常需要多轮修改。工作室需要对交付质量和最终客户负责，因此可以验收或驳回。",
+    actor: "guild",
+    destination: "验收签发台",
+    action: "切换为工作室，检查 V1 并发送具体修改意见。",
+  },
+  REVISION_REQUESTED: {
+    chapter: "第五章",
+    title: "可追溯的修改过程",
+    story: "工作室要求强化首屏卖点、统一参数网格。反馈证明了真实协作过程，但客户资料仍不会公开。",
+    actor: "designer",
+    destination: "反馈邮局 / 设计工作台",
+    action: "切换为设计师，阅读反馈并提交具有新哈希的 V2。",
+  },
+  V2_SUBMITTED: {
+    chapter: "第六章",
+    title: "工作室承担验收责任",
+    story: "第二版已经响应真实反馈。只有直接管理并验收任务的工作室，才有资格确认这段贡献。",
+    actor: "guild",
+    destination: "验收签发台",
+    action: "切换为工作室，确认 V2 达到交付标准。",
+  },
+  WORK_APPROVED: {
+    chapter: "第七章",
+    title: "把验收转化为职业凭证",
+    story: "报酬解决当次交易，凭证则结算长期职业价值。签名前必须预览所有永久公开字段。",
+    actor: "guild",
+    destination: "验收签发台",
+    action: "以工作室钱包签发 Monad 贡献凭证。",
+  },
+  ATTESTING: {
+    chapter: "链上确认",
+    title: "Monad 正在记录声明",
+    story: "链上记录签发者、设计师、贡献摘要、证据哈希与状态，不保存客户和设计源文件。",
+    actor: "guild",
+    destination: "原地等待",
+    action: "等待交易确认，不要重复签发。",
+  },
+  CREDENTIAL_ISSUED: {
+    chapter: "第八章",
+    title: "隐形劳动成为职业记忆",
+    story: "凭证已经生效，但不会自动公开全部项目。是否用于求职仍由设计师决定。",
+    actor: "designer",
+    destination: "职业档案馆",
+    action: "切换为设计师，把匿名验证入口加入求职档案。",
+  },
+  PORTFOLIO_SHARED: {
+    chapter: "第九章",
+    title: "招聘方收到可核验经历",
+    story: "HR看到的不再是一张孤立截图，而是一条由工作室签发、状态可实时读取的贡献声明。",
+    actor: "visitor",
+    destination: "招聘大厅 · HR",
+    action: "切换为 HR 访客，在没有钱包的情况下完成核验。",
+  },
+  HR_VERIFIED: {
+    chapter: "终章",
+    title: "证明事实，不替代专业判断",
+    story: "HR确认工作室确实作出过这项声明；作品水平、版权和录用决定仍由作品评审与面试判断。",
+    actor: "visitor",
+    destination: "Monad 记忆碑",
+    action: "故事主线完成。可切换工作室，在记忆碑演示错误凭证撤销。",
+  },
+  CREDENTIAL_REVOKED: {
+    chapter: "异常结局",
+    title: "撤销不会抹去历史",
+    story: "旧凭证仍可被查到，但所有验证者都会看到它已经失效，不能继续作为有效证明使用。",
+    actor: "visitor",
+    destination: "Monad 记忆碑",
+    action: "以 HR 身份查看撤销结果，或重置 Demo 重新体验。",
+  },
+};
+
 const INITIAL_PROJECT: ProjectRecord = {
   title: "电商品牌视觉设计",
   category: "电商详情页",
@@ -164,6 +281,7 @@ function App() {
       return STAGES.indexOf(entry.stage) <= current;
     }).slice(-4);
   }, [stage]);
+  const guide = STORY_GUIDES[stage];
 
   useEffect(() => {
     const listener = (event: Event) => {
@@ -599,6 +717,28 @@ function App() {
 
       <section className="game-shell">
         <div ref={gameRoot} className="game-root" />
+        <aside className="story-guide">
+          <div className="guide-heading">
+            <span>{guide.chapter}</span>
+            <strong>{guide.title}</strong>
+          </div>
+          <p>{guide.story}</p>
+          <div className="guide-objective">
+            <span>下一站</span>
+            <strong>◆ {guide.destination}</strong>
+            <small>{guide.action}</small>
+          </div>
+          {actor !== guide.actor && stage !== "HR_VERIFIED" && (
+            <button onClick={() => setActor(guide.actor)}>
+              切换为
+              {guide.actor === "designer"
+                ? "设计师"
+                : guide.actor === "guild"
+                  ? "工作室"
+                  : "HR访客"}
+            </button>
+          )}
+        </aside>
         <div className="controls">
           WASD / 方向键移动 · E 互动 · 按故事提示切换设计师 / 工作室 / HR
         </div>
