@@ -27,3 +27,10 @@ export interface WorldGameOptions {
   onReady: () => void;
   onError: (error: Error) => void;
 }
+
+export interface WorldGameHandle {
+  destroy: () => void;
+  setDirection: (direction: WorldDirection, active: boolean) => void;
+  interact: () => void;
+  updateContext: (actor: DemoRole, stage: StoryStage) => void;
+}
