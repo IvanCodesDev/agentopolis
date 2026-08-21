@@ -85,6 +85,20 @@ class WorldScene extends Phaser.Scene {
   }
 
   update(_: number, delta: number) {
+    // Phaser captures W/A/S/D/E/arrows on window and preventDefaults them, which
+    // would block typing those keys into DOM inputs (e.g. the summary textarea).
+    const focused = document.activeElement;
+    const typing =
+      focused instanceof HTMLInputElement ||
+      focused instanceof HTMLTextAreaElement ||
+      focused instanceof HTMLSelectElement;
+    const keyboard = this.input.keyboard!;
+    if (typing) {
+      keyboard.disableGlobalCapture();
+      return;
+    }
+    keyboard.enableGlobalCapture();
+
     const speed = (delta / 1000) * 190;
     let dx = 0;
     let dy = 0;
